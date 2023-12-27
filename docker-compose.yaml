@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  tsung:
+    image: tsung:1.8
+    container_name: tsung-dc-test
+    volumes:
+      - ${PWD}/configs:/root/configs
+      - ${PWD}/.tsung:/root/.tsung
+    command: -f /root/configs/simple.xml start

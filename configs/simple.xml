@@ -1,0 +1,45 @@
+<?xml version="1.3.3" encoding="UTF-8"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
+<tsung loglevel="debug" dumptraffic="true">
+    <clients>
+        <client host="localhost" use_controller_vm="true" maxusers="1000"/>
+    </clients>
+
+    <servers>
+        <server host="mipt.ru" port="443" type="ssl"/>
+    <!--
+        <server host="loadtest.glory.services" port="443" type="ssl"/>
+        <server host="pay-765.dev.glorycoin.co" port="443" type="ssl"/>
+        <server host="stage.glorycoin.co" port="443" type="ssl"/>
+    -->
+    </servers>
+
+    <load  duration="8" unit="minute">
+        <arrivalphase phase="1" duration="30" unit="minute">
+            <!--
+            <users maxnumber="10" arrivalrate="10" unit="second"/>
+            <users maxnumber="5000" interarrival="10" unit="second"/>
+            -->
+            <users maxnumber="1" interarrival="1" unit="second"/>
+        </arrivalphase>
+
+    </load>
+   
+    <sessions>
+        <session name="simple" type="ts_http" probability="100">
+                   
+            <transaction name="profile">
+                <request subst="true">
+                    <http url="/" method="GET" version="1.1" >
+                        <!--
+                        <http_header name="Accept" value="application/json"/>
+                        <http_header name="Authorization" value=" Bearer %%_token%%"/>
+                        -->
+                    </http>
+                </request>
+            </transaction>
+
+        </session>
+
+    </sessions>
+</tsung>

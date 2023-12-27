@@ -1,0 +1,58 @@
+<?xml version="1.3.3" encoding="UTF-8"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" []>
+<tsung loglevel="debug" dumptraffic="true">
+    <clients>
+        <client host="localhost" use_controller_vm="true" maxusers="1000"/>
+    </clients>
+
+    <servers>
+        <server host="loadtest.glory.services" port="443" type="ssl"/>
+    <!--
+        <server host="pay-765.dev.glorycoin.co" port="443" type="ssl"/>
+        <server host="stage.glorycoin.co" port="443" type="ssl"/>
+    -->
+    </servers>
+
+    <load  duration="8" unit="minute">
+        <arrivalphase phase="1" duration="30" unit="minute">
+            <!--
+            <users maxnumber="10" arrivalrate="10" unit="second"/>
+            <users maxnumber="5000" interarrival="10" unit="second"/>
+            -->
+            <users maxnumber="1" interarrival="1" unit="second"/>
+        </arrivalphase>
+
+    </load>
+    <options>
+        <option name="file_server" id="users" value="jwt.csv"/>
+    </options>
+   
+    <sessions>
+        <session name="glorycoin_user_info" type="ts_http" probability="100">
+            <!--
+            <transaction name="read_file">
+                <setdynvars sourcetype="file" fileid="users" delimiter=";" order="iter">
+                    <var name="email"/>
+                    <var name="token"/>
+                    <var name="userid"/>
+                </setdynvars>
+            </transaction>
+            -->       
+            <transaction name="signin">
+                <request subst="true">
+                    <dyn_variable name="token" jsonpath="authToken"/>
+                    <dyn_variable name="playerid" jsonpath="id"/>
+                    <!--
+                    <http url="/v1/auth/login" method="POST" version="1.1" contents='{&quot;login&quot;:&quot;%%_email%%&quot;, &quot;password&quot;:&quot;Test123!&quot;}'>
+                    -->
+                    <http url="/v1/auth/login" method="POST" version="1.1" contents='{&quot;login&quot;:&quot;load1225_1@xyz.aa&quot;, &quot;password&quot;:&quot;Test123!&quot;}'>
+                        <http_header name="content-type" value="application/json"/>
+                    
+                    </http>
+                </request>
+            </transaction>
+
+        </session>
+
+    </sessions>
+</tsung>
