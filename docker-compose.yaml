@@ -7,4 +7,4 @@ services:
     volumes:
       - ${PWD}/configs:/root/configs
       - ${PWD}/.tsung:/root/.tsung
-    command: -f /root/configs/simple.xml start
+    command: -f /root/configs/${FILE} start
